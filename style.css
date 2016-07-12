@@ -1,0 +1,14 @@
+.pr-reaction img {
+    position: relative;
+    top: 5px;
+}
+
+.pr-reaction {
+    color: #767676;
+    margin-right: 15px;
+}
+
+.pr-reaction:hover {
+    text-decoration: none;
+    cursor: default;
+}
