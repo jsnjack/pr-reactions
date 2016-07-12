@@ -1,7 +1,6 @@
 /*globals console, chrome */
 
-var access_token,
-    thumbs_up = '<img src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" height="20" width="20">';
+var access_token;
 
 function ready(fn) {
     if (document.readyState !== 'loading') {
@@ -60,18 +59,27 @@ function get_reactions(issue_id) {
                     }
                 }
                 if (container.firstChild.id === "pr-reactions") {
-                    container.firstChild.innerHTML = thumbs_up + amount;
+                    container.firstChild.text = amount;
                 } else {
                     element.id = "pr-reactions";
                     element.title = title;
                     element.alt = title;
                     element.classList = "pr-reaction text-small text-bold";
-                    element.innerHTML = thumbs_up + amount;
+                    element.text = amount;
+                    element.appendChild(create_img_element());
                     container.insertBefore(element, container.firstChild);
                 }
             });
         }
     });
+}
+
+function create_img_element() {
+    var element = document.createElement("img");
+    element.src = "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png";
+    element.width = 20;
+    element.height = 20;
+    return element;
 }
 
 function start () {
