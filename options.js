@@ -8,7 +8,13 @@ function save() {
 
 function load() {
     chrome.storage.local.get('token', function (storage_obj) {
-        document.querySelector("#token").value = storage_obj.token;
+        var token;
+        if (storage_obj.token === undefined) {
+            token = "";
+        } else {
+            token = storage_obj.token;
+        }
+        document.querySelector("#token").value = token;
     });
 }
 
