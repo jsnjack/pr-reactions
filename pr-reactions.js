@@ -1,4 +1,4 @@
-/*globals console, chrome */
+/*globals chrome */
 
 var access_token;
 
@@ -17,30 +17,38 @@ function is_correct_location () {
     return false;
 }
 
-function get_issue_ids(elements) {
-    var ids = [];
+function get_issues(elements) {
+    var issues = [];
     for (var i = 0; i < elements.length; i = i + 1) {
-        ids.push(elements[i].id.replace("issue_", ""));
+        var obj = {},
+            parsed = elements[i].id.split("_", 4),
+            path_obj = window.location.pathname.split("/", 4);
+        if (parsed.length === 2) {
+            // Pull request page in the repository
+            obj.id = parsed[1];
+            obj.username = path_obj[1];
+            obj.repository = path_obj[2];
+        } else {
+            // General pull request page
+            obj.id = parsed[1];
+            obj.username = parsed[2];
+            obj.repository = parsed[3];
+            obj.type = "general";
+        }
+        issues.push(obj);
     }
-    return ids;
+    return issues;
 }
 
-function generate_url(issue_id) {
-    var path_obj = window.location.pathname.split("/"),
-        repo, owner, url;
-    if (path_obj.length === 4) {
-        owner = path_obj[1];
-        repo = path_obj[2];
-        url = "https://api.github.com/repos/" + owner + "/" + repo + "/issues/" + issue_id + "/reactions?access_token=";
-        url = url + access_token;
-    } else {
-        console.log("Failed to determine request parameters");
-    }
+function generate_url(issue) {
+    var url = "https://api.github.com/repos/";
+    url = url + issue.username + "/" + issue.repository + "/issues/" + issue.id + "/reactions?access_token=";
+    url = url + access_token;
     return url;
 }
 
-function get_reactions(issue_id) {
-    var url = generate_url(issue_id);
+function get_reactions(issue) {
+    var url = generate_url(issue);
     fetch(url, {
         headers: {
             "Accept": "application/vnd.github.squirrel-girl-preview"
@@ -50,8 +58,13 @@ function get_reactions(issue_id) {
             return response.json().then(function(json) {
                 var amount = 0,
                     title = "",
-                    container = document.querySelector("#issue_" + issue_id + " div.d-table > div:last-child"),
-                    element = document.createElement("a");
+                    selector = "#issue_" + issue.id,
+                    element = document.createElement("a"),
+                    container;
+                if (issue.type === "general") {
+                    selector = selector + "_" + issue.username + "_" + issue.repository;
+                }
+                container = document.querySelector(selector + " div.d-table > div:last-child");
                 for (var i = 0; i < json.length; i = i + 1) {
                     if (json[i].content === "+1") {
                         amount = amount + 1;
@@ -85,10 +98,9 @@ function create_img_element() {
 function start () {
     if (is_correct_location()) {
         var elements = document.querySelectorAll("div.issues-listing li"),
-            ids = get_issue_ids(elements);
-
-        for (var i = 0; i < ids.length; i = i + 1) {
-            get_reactions(ids[i]);
+            issues = get_issues(elements);
+        for (var i = 0; i < issues.length; i = i + 1) {
+            get_reactions(issues[i]);
         }
 
     }
