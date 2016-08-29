@@ -1,5 +1,6 @@
 {
     "name": "pr-reactions",
+    "short_name": "pr-reactions",
     "description": "Adds pull request reactions to the pull request list on github.com",
     "version": "0.2.2",
     "applications": {
