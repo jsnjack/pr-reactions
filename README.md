@@ -5,8 +5,8 @@ Adds pull request reactions to the pull request list on github.com
 
 ### How to use
 #### Install extension:
-  - Firefox: [https://addons.mozilla.org/en-US/firefox/addon/pr-reactions/](https://addons.mozilla.org/en-US/firefox/addon/pr-reactions/)
-  - Chrome: Clone the repository, go to `Settings - Extensions`, click `Load unpacked extension...` and point to the folder with extension
+  - Firefox: [Add-ons](https://addons.mozilla.org/en-US/firefox/addon/pr-reactions/)
+  - Chrome: [Webstore](https://chrome.google.com/webstore/detail/mniofoibpkehdpebmgkcdipimfkpfaia/)
 
 #### Configure extension
   - Create `Personal access token`
