@@ -1,11 +1,10 @@
 .pr-reaction img {
     position: relative;
-    top: 5px;
+    top: 3px;
 }
 
 .pr-reaction {
     color: #767676;
-    margin-right: 15px;
 }
 
 .pr-reaction:hover {

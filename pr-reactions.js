@@ -1,6 +1,7 @@
 /*globals chrome */
 
-var access_token;
+var icon_size = 16,
+    access_token;
 
 function ready(fn) {
     if (document.readyState !== 'loading') {
@@ -64,7 +65,7 @@ function get_reactions(issue) {
                 if (issue.type === "general") {
                     selector = selector + "_" + issue.username + "_" + issue.repository;
                 }
-                container = document.querySelector(selector + " div.d-table > div:last-child");
+                container = document.querySelector(selector + " div.d-table > div:last-child > div.float-right");
                 for (var i = 0; i < json.length; i = i + 1) {
                     if (json[i].content === "+1") {
                         amount = amount + 1;
@@ -90,8 +91,8 @@ function get_reactions(issue) {
 function create_img_element() {
     var element = document.createElement("img");
     element.src = "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png";
-    element.width = 20;
-    element.height = 20;
+    element.width = icon_size;
+    element.height = icon_size;
     return element;
 }
 
