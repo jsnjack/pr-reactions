@@ -1,6 +1,6 @@
 /*globals chrome */
 
-var icon_size = 16,
+var icon_size = 20,
     access_token;
 
 function ready(fn) {
