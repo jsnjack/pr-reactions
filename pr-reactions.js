@@ -79,8 +79,9 @@ function get_reactions(issue) {
                     element.title = title;
                     element.alt = title;
                     element.classList = "pr-reaction text-small text-bold";
-                    element.text = amount;
+                    // element.text = amount;
                     element.appendChild(create_img_element());
+                    element.appendChild(create_span_element(amount));
                     container.insertBefore(element, container.firstChild);
                 }
             });
@@ -93,6 +94,12 @@ function create_img_element() {
     element.src = "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png";
     element.width = icon_size;
     element.height = icon_size;
+    return element;
+}
+
+function create_span_element(text) {
+    var element = document.createElement("span");
+    element.textContent = text;
     return element;
 }
 
