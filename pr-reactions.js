@@ -1,7 +1,7 @@
 /*globals chrome */
 
 var icon_size = 20,
-    access_token, word_wrap;
+    settings = {};
 
 function ready(fn) {
     if (document.readyState !== 'loading') {
@@ -44,7 +44,7 @@ function get_issues(elements) {
 function generate_url(issue) {
     var url = "https://api.github.com/repos/";
     url = url + issue.username + "/" + issue.repository + "/issues/" + issue.id + "/reactions?access_token=";
-    url = url + access_token;
+    url = url + settings.token;
     return url;
 }
 
@@ -114,7 +114,7 @@ function start () {
 
     }
 
-    if (word_wrap) {
+    if (settings.word_wrap) {
         elements = document.querySelectorAll("code");
         for (i = 0; i < elements.length; i = i + 1) {
             elements[i].classList = "pr-reaction-word-wrap " + elements[i].classList;
@@ -123,15 +123,10 @@ function start () {
 }
 
 function load_options() {
-    chrome.storage.local.get('word_wrap', function (storage_obj) {
-        word_wrap = storage_obj.word_wrap;
-    });
-
-    chrome.storage.local.get('token', function (storage_obj) {
-        access_token = storage_obj.token;
+    chrome.storage.local.get(["word_wrap", "token"], function (storage_obj) {
+        settings = storage_obj;
         start();
     });
-
 }
 
 function init () {

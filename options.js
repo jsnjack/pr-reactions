@@ -8,24 +8,9 @@ function save() {
 }
 
 function load() {
-    chrome.storage.local.get('token', function (storage_obj) {
-        var token;
-        if (storage_obj.token === undefined) {
-            token = "";
-        } else {
-            token = storage_obj.token;
-        }
-        document.querySelector("#token").value = token;
-    });
-
-    chrome.storage.local.get('word_wrap', function (storage_obj) {
-        var word_wrap;
-        if (storage_obj.word_wrap === undefined) {
-            word_wrap = false;
-        } else {
-            word_wrap = storage_obj.word_wrap;
-        }
-        document.querySelector("#word_wrap").checked = word_wrap;
+    chrome.storage.local.get(["token", "word_wrap"], function (storage_obj) {
+        document.querySelector("#token").value = storage_obj.token ? storage_obj.token : "";
+        document.querySelector("#word_wrap").checked = storage_obj.word_wrap ? true : false;
     });
 }
 
