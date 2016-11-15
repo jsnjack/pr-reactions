@@ -1,7 +1,7 @@
 /*globals chrome */
 
 var icon_size = 20,
-    access_token;
+    access_token, word_wrap;
 
 function ready(fn) {
     if (document.readyState !== 'loading') {
@@ -104,21 +104,34 @@ function create_span_element(text) {
 }
 
 function start () {
+    var elements, issues, i;
     if (is_correct_location()) {
-        var elements = document.querySelectorAll("div.issues-listing li"),
-            issues = get_issues(elements);
-        for (var i = 0; i < issues.length; i = i + 1) {
+        elements = document.querySelectorAll("div.issues-listing li");
+        issues = get_issues(elements);
+        for (i = 0; i < issues.length; i = i + 1) {
             get_reactions(issues[i]);
         }
 
     }
+
+    if (word_wrap) {
+        elements = document.querySelectorAll("code");
+        for (i = 0; i < elements.length; i = i + 1) {
+            elements[i].classList = "pr-reaction-word-wrap " + elements[i].classList;
+        }
+    }
 }
 
 function load_options() {
+    chrome.storage.local.get('word_wrap', function (storage_obj) {
+        word_wrap = storage_obj.word_wrap;
+    });
+
     chrome.storage.local.get('token', function (storage_obj) {
         access_token = storage_obj.token;
         start();
     });
+
 }
 
 function init () {
@@ -128,6 +141,7 @@ function init () {
     document.addEventListener("pjax:success", function () {
         start();
     });
+
 }
 
 ready(init);

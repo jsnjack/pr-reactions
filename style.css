@@ -13,3 +13,8 @@
     text-decoration: none;
     cursor: default;
 }
+
+.pr-reaction-word-wrap {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+}

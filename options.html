@@ -5,14 +5,19 @@
 <head>
     <meta charset="utf-8">
     <script src="options.js"></script>
+    <link href="options.css" rel="stylesheet">
 </head>
 
 <body>
     <form id="form">
-        <p>
-            <b>Github personal access token</b>
-        </p>
-        <input id="token" type="text" size="40" />
+        <label>
+            Github personal access token
+            <input id="token" type="text" size="40" />
+        </label>
+        <label>
+            Enable word-wrap for code
+            <input id="word_wrap" type="checkbox" />
+        </label>
         <button type="submit">Save</button>
     </form>
 </body>
