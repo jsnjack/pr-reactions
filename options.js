@@ -1,6 +1,23 @@
 /*globals chrome */
 
-function save() {
+function animation_event (event) {
+    switch(event.type) {
+        case "animationstart":
+            event.target.style.opacity = 1;
+            break;
+        case "animationend":
+            event.target.classList.remove("animate-save");
+            setTimeout(function () {
+                event.target.style.opacity = 0;
+            }, 1000);
+            break;
+    }
+}
+
+function save(event) {
+    event.preventDefault();
+    var indicator = document.querySelector("div.indicator");
+    indicator.classList.add("animate-save");
     chrome.storage.local.set({
         token: document.querySelector("#token").value,
         word_wrap: document.querySelector("#word_wrap").checked
@@ -23,8 +40,12 @@ function ready(fn) {
 }
 
 function start() {
-    load();
+    var indicator = document.querySelector("div.indicator");
+    indicator.addEventListener("animationstart", animation_event, false);
+    indicator.addEventListener("animationend", animation_event, false);
     document.querySelector("#form").addEventListener("submit", save);
+
+    load();
 }
 
 ready(start);

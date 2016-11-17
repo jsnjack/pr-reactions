@@ -1,5 +1,39 @@
+body {
+    overflow: hidden;
+}
+
 label {
     display: block;
     font-weight: bold;
     padding-bottom: 1em;
+}
+
+.indicator {
+    opacity: 0;
+    background: #2baad4;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.animate-save {
+    animation-duration: 1s;
+    animation-name: slidein;
+    animation-iteration-count: 1;
+    animation-direction: alternate;
+}
+
+@keyframes slidein {
+    from {
+        opacity: 1;
+        margin-left: 100%;
+        width: 300%;
+    }
+
+    to {
+        opacity: 1;
+        margin-left: 0%;
+        width: 100%;
+    }
 }
