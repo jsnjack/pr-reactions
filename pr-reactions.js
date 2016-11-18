@@ -11,8 +11,8 @@ function ready(fn) {
     }
 }
 
-function is_correct_location () {
-    if (window.location.href.indexOf("/pulls") > -1) {
+function is_correct_location (path) {
+    if (window.location.href.indexOf(path) > -1) {
         return true;
     }
     return false;
@@ -103,9 +103,49 @@ function create_span_element(text) {
     return element;
 }
 
+function generate_hipchat_payload() {
+    var payload,
+        username = document.querySelector("meta[name='user-login']").getAttribute("content");
+    payload = {
+        "color": "purple",
+        "from": username,
+        "message_format": "text",
+        "message": username + " likes pull request " + location.href,
+        "notify": true,
+        "card": {
+            "style": "application",
+            "format": "compact",
+            "url": location.href,
+            "id": "pr-reactions",
+            "title": document.title,
+            "description": username + " likes pull request",
+            "icon": {
+                "url": "https://github.com/fluidicon.png"
+            },
+            "date": new Date()
+        }
+    };
+    return JSON.stringify(payload);
+}
+
+function on_reactions_container_click (event) {
+    if (settings.hipchat_url && event.target.getAttribute("alt") === ":+1:") {
+        // Check that it was not `unreact` actions
+        if (event.target.parentNode.parentNode.getAttribute("value") === "+1 react") {
+            fetch(settings.hipchat_url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: generate_hipchat_payload()
+            });
+        }
+    }
+}
+
 function start () {
     var elements, issues, i;
-    if (is_correct_location()) {
+    if (is_correct_location("/pulls")) {
         elements = document.querySelectorAll("div.issues-listing li");
         issues = get_issues(elements);
         for (i = 0; i < issues.length; i = i + 1) {
@@ -120,10 +160,18 @@ function start () {
             elements[i].classList = "pr-reaction-word-wrap " + elements[i].classList;
         }
     }
+
+    if (settings.hipchat_notify && is_correct_location("/pull/")) {
+        var button_container = document.querySelector("div.timeline-comment-actions");
+        if (button_container) {
+            // Github replaces reaction buttons, attach event to the container
+            button_container.addEventListener("click", on_reactions_container_click);
+        }
+    }
 }
 
 function load_options() {
-    chrome.storage.local.get(["word_wrap", "token"], function (storage_obj) {
+    chrome.storage.local.get(["word_wrap", "token", "hipchat_url", "hipchat_notify"], function (storage_obj) {
         settings = storage_obj;
         start();
     });

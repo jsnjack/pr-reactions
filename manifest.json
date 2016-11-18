@@ -27,11 +27,19 @@
             ]
         }
     ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": true
+    },
     "options_ui": {
         "page": "options.html"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "webRequest",
+        "webRequestBlocking"
     ],
     "manifest_version": 2
 }

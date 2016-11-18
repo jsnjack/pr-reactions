@@ -20,14 +20,18 @@ function save(event) {
     indicator.classList.add("animate-save");
     chrome.storage.local.set({
         token: document.querySelector("#token").value,
-        word_wrap: document.querySelector("#word_wrap").checked
+        word_wrap: document.querySelector("#word_wrap").checked,
+        hipchat_url: document.querySelector("#hipchat_url").value,
+        hipchat_notify: document.querySelector("#hipchat_notify").checked
     });
 }
 
 function load() {
-    chrome.storage.local.get(["token", "word_wrap"], function (storage_obj) {
+    chrome.storage.local.get(["token", "word_wrap", "hipchat_url", "hipchat_notify"], function (storage_obj) {
         document.querySelector("#token").value = storage_obj.token ? storage_obj.token : "";
         document.querySelector("#word_wrap").checked = storage_obj.word_wrap ? true : false;
+        document.querySelector("#hipchat_url").value = storage_obj.hipchat_url ? storage_obj.hipchat_url : "";
+        document.querySelector("#hipchat_notify").checked = storage_obj.hipchat_notify ? true : false;
     });
 }
 
