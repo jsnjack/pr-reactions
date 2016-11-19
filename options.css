@@ -15,10 +15,11 @@ label {
     padding: 5px;
     text-align: center;
     font-weight: bold;
+    border-radius: 5px;
 }
 
 .animate-save {
-    animation-duration: 0.5s;
+    animation-duration: 0.2s;
     animation-name: slidein;
     animation-iteration-count: 1;
     animation-direction: alternate;
