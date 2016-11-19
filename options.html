@@ -11,22 +11,28 @@
 <body>
     <div class="indicator">Saved</div>
     <form id="form">
-        <label>
-            Github personal access token
-            <input id="token" type="text" size="40" />
-        </label>
-        <label>
-            Enable word-wrap for code
-            <input id="word_wrap" type="checkbox" />
-        </label>
-        <label>
-            Notify in HipChat
-            <input id="hipchat_notify" type="checkbox" />
-        </label>
-        <label>
-            HipChat notification url
-            <input id="hipchat_url" type="url" />
-        </label>
+        <section>
+            <label>
+                Github personal access token
+                <input id="token" type="text" size="40" />
+            </label>
+        </section>
+        <section>
+            <label>
+                Enable word-wrap for code
+                <input id="word_wrap" type="checkbox" />
+            </label>
+        </section>
+        <section>
+            <label>
+                Notify in HipChat
+                <input id="hipchat_notify" type="checkbox" />
+            </label>
+            <label>
+                HipChat notification url
+                <input id="hipchat_url" type="url" size="40"/>
+            </label>
+        </section>
         <button type="submit">Save</button>
     </form>
 </body>

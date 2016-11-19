@@ -5,7 +5,16 @@ body {
 label {
     display: block;
     font-weight: bold;
-    padding-bottom: 1em;
+    padding: 5px 0 5px 0;
+}
+
+section {
+    border-bottom: 1px solid dimgray;
+}
+
+button {
+    margin: 40px 0 5px 0;
+    float: right;
 }
 
 .indicator {
