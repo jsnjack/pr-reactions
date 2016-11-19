@@ -1,7 +1,8 @@
 /*globals chrome */
 
 var icon_size = 20,
-    settings = {};
+    settings = {},
+    hipchat_notified = false;
 
 function ready(fn) {
     if (document.readyState !== 'loading') {
@@ -128,17 +129,34 @@ function generate_hipchat_payload() {
     return JSON.stringify(payload);
 }
 
+function notify_hipchat() {
+    hipchat_notified = false;
+    fetch(settings.hipchat_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: generate_hipchat_payload()
+    }).then(function (response) {
+        if (response.ok) {
+            hipchat_notified = true;
+        }
+    });
+    // Once in a while a request can be blocked because of the CSP violation.
+    // That should not happen as the request is patched in background.js.
+    // Retrying the request should help
+    setTimeout(function () {
+        if (!hipchat_notified) {
+            notify_hipchat();
+        }
+    }, 1000);
+}
+
 function on_reactions_container_click (event) {
     if (settings.hipchat_url && event.target.getAttribute("alt") === ":+1:") {
         // Check that it was not `unreact` actions
         if (event.target.parentNode.parentNode.getAttribute("value") === "+1 react") {
-            fetch(settings.hipchat_url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: generate_hipchat_payload()
-            });
+            notify_hipchat();
         }
     }
 }
