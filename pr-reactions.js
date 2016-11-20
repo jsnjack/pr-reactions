@@ -152,7 +152,7 @@ function notify_hipchat() {
     }, 1000);
 }
 
-function on_reactions_container_click (event) {
+function on_click (event) {
     if (settings.hipchat_url) {
         // Check that it was not `unreact` actions
         var node = event.target;
@@ -190,16 +190,12 @@ function start () {
 function load_options() {
     chrome.storage.local.get(["word_wrap", "token", "hipchat_url", "hipchat_notify"], function (storage_obj) {
         settings = storage_obj;
+        start();
 
         if (settings.hipchat_notify && is_correct_location("/pull/")) {
-            var button_container = document.querySelector("div[id^=issue-]");
-            if (button_container) {
-                // Github replaces reaction buttons, attach event to the container
-                button_container.addEventListener("click", on_reactions_container_click);
-            }
+            window.removeEventListener("click", on_click);
+            window.addEventListener("click", on_click);
         }
-
-        start();
     });
 }
 
@@ -210,7 +206,6 @@ function init () {
     document.addEventListener("pjax:success", function () {
         start();
     });
-
 }
 
 ready(init);
