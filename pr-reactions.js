@@ -1,8 +1,8 @@
 /*globals chrome */
 
 var icon_size = 20,
-    settings = {},
-    hipchat_notified = false;
+    settings = {};
+
 
 function ready(fn) {
     if (document.readyState !== 'loading') {
@@ -126,30 +126,18 @@ function generate_hipchat_payload() {
             "date": new Date()
         }
     };
-    return JSON.stringify(payload);
+    return payload;
 }
 
 function notify_hipchat() {
-    hipchat_notified = false;
-    fetch(settings.hipchat_url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: generate_hipchat_payload()
-    }).then(function (response) {
-        if (response.ok) {
-            hipchat_notified = true;
+    chrome.runtime.sendMessage({
+        "hipchat": {
+            "notify_thumb_up": {
+                "data": generate_hipchat_payload(),
+                "url": settings.hipchat_url
+            }
         }
     });
-    // Once in a while a request can be blocked because of the CSP violation.
-    // That should not happen as the request is patched in background.js.
-    // Retrying the request should help
-    setTimeout(function () {
-        if (!hipchat_notified) {
-            notify_hipchat();
-        }
-    }, 1000);
 }
 
 function on_click (event) {

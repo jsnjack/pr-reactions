@@ -1,26 +1,17 @@
-/* globals chrome */
-chrome.webRequest.onHeadersReceived.addListener(function (details) {
-    for (var i = 0; i < details.responseHeaders.length; i++) {
+/* globals chrome*/
 
-        if (isCSPHeader(details.responseHeaders[i].name.toUpperCase())) {
-            var csp = details.responseHeaders[i].value;
-            csp = csp.replace("media-src 'none'", "media-src 'self' blob:");
-            csp = csp.replace("connect-src 'self' uploads.github.com status.github.com api.github.com www.google-analytics.com github-cloud.s3.amazonaws.com wss://live.github.com",
-                "connect-src 'self' uploads.github.com status.github.com api.github.com www.google-analytics.com github-cloud.s3.amazonaws.com wss://live.github.com hipchat.com");
+chrome.runtime.onMessage.addListener(content_script_message);
 
-            details.responseHeaders[i].value = csp;
+function content_script_message(message) {
+    if (message.hipchat && message.hipchat.notify_thumb_up) {
+        if (message.hipchat.notify_thumb_up.url) {
+            fetch(message.hipchat.notify_thumb_up.url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(message.hipchat.notify_thumb_up.data)
+            });
         }
     }
-
-    return { // Return the new HTTP header
-        responseHeaders: details.responseHeaders
-    };
-}, {
-        urls: ["*://github.com/*"],
-        types: ["main_frame"]
-    }, ["blocking", "responseHeaders"]);
-
-
-function isCSPHeader(headerName) {
-    return (headerName === 'CONTENT-SECURITY-POLICY') || (headerName === 'X-WEBKIT-CSP');
 }
