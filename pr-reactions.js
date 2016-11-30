@@ -110,7 +110,7 @@ function get_random_int(min, max) {
 
 function generate_message () {
     var username, default_message, id, message;
-    if (settings.hipchat_messages.length === 0) {
+    if (!settings.hipchat_messages || settings.hipchat_messages.length === 0) {
         username = document.querySelector("meta[name='user-login']").getAttribute("content");
         default_message = username + " likes the pull request";
         message = default_message;
