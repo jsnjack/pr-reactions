@@ -111,7 +111,7 @@ function generate_hipchat_payload() {
         "color": "purple",
         "from": username,
         "message_format": "text",
-        "message": username + " likes pull request " + location.href,
+        "message": username + " likes the pull request " + location.href,
         "notify": true,
         "card": {
             "style": "application",
@@ -119,7 +119,7 @@ function generate_hipchat_payload() {
             "url": location.href,
             "id": "pr-reactions",
             "title": document.title,
-            "description": username + " likes pull request",
+            "description": username + " likes the pull request",
             "icon": {
                 "url": "https://github.com/fluidicon.png"
             },
