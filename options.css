@@ -59,15 +59,16 @@ button {
 }
 
 #messages_container ul li {
-    background: #2baad4;
+    /*background: #2baad4;*/
     padding: 5px;
     border-radius: 5px;
     display: inline-block;
     margin: 0 5px 0 5px;
+    border: 2px solid #2baad4;
 }
 #messages_container ul li::after {
     content: "  |x";
-    color: white;
+    color: grey;
 }
 #messages_container ul li:hover {
     cursor: pointer;
