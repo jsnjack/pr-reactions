@@ -104,14 +104,32 @@ function create_span_element(text) {
     return element;
 }
 
+function get_random_int(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generate_message () {
+    var username, default_message, id, message;
+    if (settings.hipchat_messages.length === 0) {
+        username = document.querySelector("meta[name='user-login']").getAttribute("content");
+        default_message = username + " likes the pull request";
+        message = default_message;
+    } else {
+        id = get_random_int(0, settings.hipchat_messages.length - 1);
+        message = settings.hipchat_messages[id];
+    }
+    return message;
+}
+
 function generate_hipchat_payload() {
     var payload,
         username = document.querySelector("meta[name='user-login']").getAttribute("content");
+
     payload = {
         "color": "purple",
         "from": username,
         "message_format": "text",
-        "message": username + " likes the pull request " + location.href,
+        "message": generate_message() + " " + location.href,
         "notify": true,
         "card": {
             "style": "application",
@@ -119,7 +137,7 @@ function generate_hipchat_payload() {
             "url": location.href,
             "id": "pr-reactions",
             "title": document.title,
-            "description": username + " likes the pull request",
+            "description": generate_message(),
             "icon": {
                 "url": "https://github.com/fluidicon.png"
             },
@@ -176,7 +194,7 @@ function start () {
 }
 
 function load_options() {
-    chrome.storage.local.get(["word_wrap", "token", "hipchat_url", "hipchat_notify"], function (storage_obj) {
+    chrome.storage.local.get(["word_wrap", "token", "hipchat_url", "hipchat_notify", "hipchat_messages"], function (storage_obj) {
         settings = storage_obj;
         start();
 

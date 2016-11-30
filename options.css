@@ -47,3 +47,28 @@ button {
         width: 100%;
     }
 }
+
+#message_add_container {
+    display: block;
+}
+
+#messages_container ul {
+    list-style-type: none;
+    display: inline-block;
+    padding: 5px;
+}
+
+#messages_container ul li {
+    background: #2baad4;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 0 5px 0 5px;
+}
+#messages_container ul li::after {
+    content: "  |x";
+    color: white;
+}
+#messages_container ul li:hover {
+    cursor: pointer;
+}
