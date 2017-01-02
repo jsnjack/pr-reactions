@@ -164,7 +164,7 @@ function on_click (event) {
         var node = event.target;
         while (node) {
             if (node.nodeName === "BUTTON") {
-                if (node.getAttribute("value") === "+1 react") {
+                if (node.getAttribute("value") === "THUMBS_UP react") {
                     notify_hipchat();
                 }
                 break;
