@@ -174,6 +174,13 @@ function on_click (event) {
     }
 }
 
+function attach_click_event () {
+    if (settings.hipchat_notify && is_correct_location("/pull/")) {
+        window.removeEventListener("click", on_click);
+        window.addEventListener("click", on_click);
+    }
+}
+
 function start () {
     var elements, issues, i;
     if (is_correct_location("/pulls")) {
@@ -197,11 +204,7 @@ function load_options() {
     chrome.storage.local.get(["word_wrap", "token", "hipchat_url", "hipchat_notify", "hipchat_messages"], function (storage_obj) {
         settings = storage_obj;
         start();
-
-        if (settings.hipchat_notify && is_correct_location("/pull/")) {
-            window.removeEventListener("click", on_click);
-            window.addEventListener("click", on_click);
-        }
+        attach_click_event();
     });
 }
 
@@ -210,6 +213,7 @@ function init () {
 
     // Github uses pjax to switch tabs
     document.addEventListener("pjax:success", function () {
+        attach_click_event();
         start();
     });
 }
