@@ -1,7 +1,8 @@
 /*globals chrome */
 
 var icon_size = 20,
-    settings = {};
+    settings = {},
+    OPTIONS = ["word_wrap", "assigned_issues", "token", "hipchat_url", "hipchat_notify", "hipchat_messages"];
 
 
 function ready(fn) {
@@ -198,10 +199,18 @@ function start () {
             elements[i].classList = "pr-reaction-word-wrap " + elements[i].classList;
         }
     }
+
+    if (settings.assigned_issues) {
+        var element = document.querySelector("ul[role='navigation'] a[href='/issues']");
+        if (element) {
+            element.textContent = "Assigned issues";
+            element.href = "//github.com/issues/assigned";
+        }
+    }
 }
 
 function load_options() {
-    chrome.storage.local.get(["word_wrap", "token", "hipchat_url", "hipchat_notify", "hipchat_messages"], function (storage_obj) {
+    chrome.storage.local.get(OPTIONS, function (storage_obj) {
         settings = storage_obj;
         start();
         attach_click_event();
