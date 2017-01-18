@@ -160,17 +160,32 @@ function notify_hipchat() {
 }
 
 function on_click (event) {
+    var reaction_button_clicked = false,
+        data_channel;
     if (settings.hipchat_url) {
-        // Check that it was not `unreact` actions
         var node = event.target;
         while (node) {
-            if (node.nodeName === "BUTTON") {
-                if (node.getAttribute("value") === "THUMBS_UP react") {
-                    notify_hipchat();
+            if ("getAttribute" in node) {
+                if (!reaction_button_clicked && node.nodeName === "BUTTON") {
+                    if (node.getAttribute("value") === "THUMBS_UP react") {
+                        reaction_button_clicked = true;
+                    }
                 }
-                break;
+
+                data_channel = node.getAttribute("data-channel");
+                if (reaction_button_clicked && data_channel) {
+                    if (data_channel.indexOf(":pull-request:") > 0) {
+                        notify_hipchat();
+                        return;
+                    }
+                    if (data_channel.indexOf(":pull-request-review-comment:") > 0) {
+                        return;
+                    }
+                }
+                node = node.parentNode;
+            } else {
+                return;
             }
-            node = node.parentNode;
         }
     }
 }
