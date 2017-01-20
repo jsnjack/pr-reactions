@@ -1,8 +1,11 @@
 /*globals chrome */
 
 var icon_size = 20,
-    settings = {},
-    OPTIONS = ["word_wrap", "assigned_issues", "token", "hipchat_url", "hipchat_notify", "hipchat_messages"];
+    settings = {};
+var OPTIONS = [
+    "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "hipchat_messages", "organization",
+    "pending_pull_requests"
+];
 
 
 function ready(fn) {
@@ -197,6 +200,42 @@ function attach_click_event () {
     }
 }
 
+function update_number_of_pending_pull_requests(element) {
+    // The way to get opened pull requests with github is to fetch all repositories
+    // from the organization and request opened pull requests after
+    var url_repos = "https://api.github.com/orgs/" + settings.organization + "/repos?access_token=" + settings.token;
+    element.setAttribute("pending_pr", 0);
+    fetch(url_repos, {
+        headers: {
+            "Accept": "application/vnd.github.squirrel-girl-preview"
+        }
+    }).then(function(response) {
+        if (response.ok) {
+            return response.json().then(function(json) {
+                for (var i=0; i < json.length; i++) {
+                    var url_pull_requests = "https://api.github.com/repos/" + settings.organization + "/";
+                    url_pull_requests += json[i].name + "/pulls?access_token=" + settings.token;
+                    fetch(url_pull_requests, {
+                        headers: {
+                            "Accept": "application/vnd.github.squirrel-girl-preview"
+                        }
+                    }).then(function(response) {
+                        if (response.ok) {
+                            return response.json().then(function(json) {
+                                for (var i=0; i < json.length; i++) {
+                                    var number = element.getAttribute("pending_pr");
+                                    element.setAttribute("pending_pr", parseInt(number, 10) + 1);
+                                    element.textContent = "Pending pull requests (" + element.getAttribute("pending_pr") + ")";
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
 function start () {
     var elements, issues, i;
     if (is_correct_location("/pulls")) {
@@ -221,6 +260,30 @@ function start () {
             element.textContent = "Assigned issues";
             element.href = "//github.com/issues/assigned";
         }
+    }
+
+    if (settings.pending_pull_requests && settings.organization) {
+        var container = document.querySelector("ul[role='navigation']"),
+            sample = container.querySelector("a[href='/pulls']"),
+            pending_pr_element, pending_pr_element_container;
+
+        pending_pr_element = document.querySelector("#pr-reactions_pending_pr");
+        if (!pending_pr_element) {
+            pending_pr_element = document.createElement("a");
+            pending_pr_element.href = "/pulls?q=is:open is:pr user:" + settings.organization;
+            pending_pr_element.setAttribute("aria-label", "Pending pull requests in your organization");
+            pending_pr_element.className = sample.className.replace(" selected ", " ");
+            pending_pr_element.textContent = "Pending pull requests (0)";
+            pending_pr_element.setAttribute("pending_pr", 0);
+            pending_pr_element.id = "pr-reactions_pending_pr";
+
+            pending_pr_element_container = document.createElement("li");
+            pending_pr_element_container.className = sample.parentElement.className;
+
+            pending_pr_element_container.appendChild(pending_pr_element);
+            container.insertBefore(pending_pr_element_container, container.firstChild);
+        }
+        update_number_of_pending_pull_requests(pending_pr_element);
     }
 }
 
