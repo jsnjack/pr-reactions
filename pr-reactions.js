@@ -1,4 +1,5 @@
 /*globals chrome */
+/* jshint loopfunc:true */
 
 var icon_size = 20,
     settings = {};
