@@ -258,7 +258,7 @@ function start () {
         var element = document.querySelector("ul[role='navigation'] a[href='/issues']");
         if (element) {
             element.textContent = "Assigned issues";
-            element.href = "//github.com/issues/assigned";
+            element.href = "://github.com/issues/assigned/?q=is%3Aopen+sort%3Aupdated-desc";
         }
     }
 
