@@ -2,6 +2,7 @@
 /* jshint loopfunc:true */
 
 var icon_size = 20,
+    pending_prs_cache = 15 * 1000,
     settings = {};
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "hipchat_messages", "organization",
@@ -204,37 +205,48 @@ function attach_click_event () {
 function update_number_of_pending_pull_requests(element) {
     // The way to get opened pull requests with github is to fetch all repositories
     // from the organization and request opened pull requests after
-    var url_repos = "https://api.github.com/orgs/" + settings.organization + "/repos?access_token=" + settings.token;
+    var last_data = window.sessionStorage.getItem("pr-reactions:pending_prs:timestamp");
+
     element.setAttribute("pending_pr", 0);
-    fetch(url_repos, {
-        headers: {
-            "Accept": "application/vnd.github.squirrel-girl-preview"
-        }
-    }).then(function(response) {
-        if (response.ok) {
-            return response.json().then(function(json) {
-                for (var i=0; i < json.length; i++) {
-                    var url_pull_requests = "https://api.github.com/repos/" + settings.organization + "/";
-                    url_pull_requests += json[i].name + "/pulls?access_token=" + settings.token;
-                    fetch(url_pull_requests, {
-                        headers: {
-                            "Accept": "application/vnd.github.squirrel-girl-preview"
-                        }
-                    }).then(function(response) {
-                        if (response.ok) {
-                            return response.json().then(function(json) {
-                                for (var i=0; i < json.length; i++) {
-                                    var number = element.getAttribute("pending_pr");
-                                    element.setAttribute("pending_pr", parseInt(number, 10) + 1);
-                                    element.textContent = "Pending pull requests (" + element.getAttribute("pending_pr") + ")";
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
+    if (last_data && last_data > new Date().getTime() - pending_prs_cache) {
+        var number = window.sessionStorage.getItem("pr-reactions:pending_prs:value");
+        element.setAttribute("pending_pr", number);
+        element.textContent = "Pending pull requests (" + number + ")";
+    } else {
+        var url_repos = "https://api.github.com/orgs/" + settings.organization + "/repos?access_token=" + settings.token;
+        fetch(url_repos, {
+            headers: {
+                "Accept": "application/vnd.github.squirrel-girl-preview"
+            }
+        }).then(function(response) {
+            if (response.ok) {
+                return response.json().then(function(json) {
+                    for (var i=0; i < json.length; i++) {
+                        var url_pull_requests = "https://api.github.com/repos/" + settings.organization + "/";
+                        url_pull_requests += json[i].name + "/pulls?access_token=" + settings.token;
+                        fetch(url_pull_requests, {
+                            headers: {
+                                "Accept": "application/vnd.github.squirrel-girl-preview"
+                            }
+                        }).then(function(response) {
+                            if (response.ok) {
+                                return response.json().then(function(json) {
+                                    for (var i=0; i < json.length; i++) {
+                                        var number = element.getAttribute("pending_pr");
+                                        element.setAttribute("pending_pr", parseInt(number, 10) + 1);
+                                        element.textContent = "Pending pull requests (" + element.getAttribute("pending_pr") + ")";
+                                        window.sessionStorage.setItem("pr-reactions:pending_prs:timestamp", new Date().getTime());
+                                        window.sessionStorage.setItem("pr-reactions:pending_prs:value", element.getAttribute("pending_pr"));
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
 }
 
 function start () {

@@ -1,6 +1,9 @@
 /*globals chrome */
 
-var OPTIONS = ["token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "hipchat_messages"];
+var OPTIONS = [
+    "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "hipchat_messages", "organization",
+    "pending_pull_requests"
+];
 
 function animation_event (event) {
     switch(event.type) {
@@ -35,7 +38,9 @@ function save(event) {
         token: document.querySelector("#token").value,
         word_wrap: document.querySelector("#word_wrap").checked,
         assigned_issues: document.querySelector("#assigned_issues").checked,
+        pending_pull_requests: document.querySelector("#pending_pull_requests").checked,
         hipchat_url: document.querySelector("#hipchat_url").value,
+        organization: document.querySelector("#organization").value,
         hipchat_notify: document.querySelector("#hipchat_notify").checked,
         hipchat_messages: get_hipchat_messages()
     });
@@ -46,6 +51,8 @@ function load() {
         document.querySelector("#token").value = storage_obj.token ? storage_obj.token : "";
         document.querySelector("#word_wrap").checked = storage_obj.word_wrap ? true : false;
         document.querySelector("#assigned_issues").checked = storage_obj.assigned_issues ? true : false;
+        document.querySelector("#pending_pull_requests").checked = storage_obj.pending_pull_requests ? true : false;
+        document.querySelector("#organization").value = storage_obj.organization ? storage_obj.organization : "";
         document.querySelector("#hipchat_url").value = storage_obj.hipchat_url ? storage_obj.hipchat_url : "";
         document.querySelector("#hipchat_notify").checked = storage_obj.hipchat_notify ? true : false;
         for (var i = 0; i < storage_obj.hipchat_messages.length; i = i + 1) {
