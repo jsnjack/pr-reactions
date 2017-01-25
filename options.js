@@ -1,5 +1,3 @@
-/*globals chrome */
-
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "hipchat_messages", "organization",
     "pending_pull_requests"

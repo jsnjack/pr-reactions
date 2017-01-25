@@ -1,5 +1,3 @@
-/* globals chrome*/
-
 chrome.runtime.onMessage.addListener(content_script_message);
 
 function content_script_message(message) {

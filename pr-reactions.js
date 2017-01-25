@@ -1,6 +1,3 @@
-/*globals chrome */
-/* jshint loopfunc:true */
-
 var icon_size = 20,
     pending_prs_cache = 15 * 1000,
     settings = {},
