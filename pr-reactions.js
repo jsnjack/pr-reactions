@@ -3,7 +3,8 @@
 
 var icon_size = 20,
     pending_prs_cache = 15 * 1000,
-    settings = {};
+    settings = {},
+    pending_prs_label = "Pending prs";
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "hipchat_messages", "organization",
     "pending_pull_requests"
@@ -211,7 +212,7 @@ function update_number_of_pending_pull_requests(element) {
     if (last_data && last_data > new Date().getTime() - pending_prs_cache) {
         var number = window.sessionStorage.getItem("pr-reactions:pending_prs:value");
         element.setAttribute("pending_pr", number);
-        element.textContent = "Pending pull requests (" + number + ")";
+        element.textContent = pending_prs_label + " (" + number + ")";
     } else {
         var url_repos = "https://api.github.com/orgs/" + settings.organization + "/repos?access_token=" + settings.token;
         fetch(url_repos, {
@@ -234,7 +235,7 @@ function update_number_of_pending_pull_requests(element) {
                                     for (var i=0; i < json.length; i++) {
                                         var number = element.getAttribute("pending_pr");
                                         element.setAttribute("pending_pr", parseInt(number, 10) + 1);
-                                        element.textContent = "Pending pull requests (" + element.getAttribute("pending_pr") + ")";
+                                        element.textContent = pending_prs_label + " (" + element.getAttribute("pending_pr") + ")";
                                         window.sessionStorage.setItem("pr-reactions:pending_prs:timestamp", new Date().getTime());
                                         window.sessionStorage.setItem("pr-reactions:pending_prs:value", element.getAttribute("pending_pr"));
                                     }
@@ -286,7 +287,7 @@ function start () {
             pending_pr_element.href = "/pulls?q=is:open is:pr user:" + settings.organization;
             pending_pr_element.setAttribute("aria-label", "Pending pull requests in your organization");
             pending_pr_element.className = sample.className.replace(" selected ", " ");
-            pending_pr_element.textContent = "Pending pull requests (0)";
+            pending_pr_element.textContent = pending_prs_label + " (0)";
             pending_pr_element.setAttribute("pending_pr", 0);
             pending_pr_element.id = "pr-reactions_pending_pr";
 
