@@ -66,6 +66,7 @@ function get_reactions(issue) {
                     title = "",
                     selector = "#issue_" + issue.id,
                     element = document.createElement("a"),
+                    username = document.querySelector("meta[name='user-login']").getAttribute("content"),
                     container;
                 if (issue.type === "general") {
                     selector = selector + "_" + issue.username + "_" + issue.repository;
@@ -77,6 +78,9 @@ function get_reactions(issue) {
                         title = title + json[i].user.login + " ";
                     }
                 }
+                if (title.indexOf(username) === -1) {
+                    amount = amount + "★";
+                }
                 if (container.firstChild.id === "pr-reactions") {
                     container.firstChild.text = amount;
                 } else {
@@ -84,7 +88,6 @@ function get_reactions(issue) {
                     element.title = title;
                     element.alt = title;
                     element.classList = "pr-reaction text-small text-bold";
-                    // element.text = amount;
                     element.appendChild(create_img_element());
                     element.appendChild(create_span_element(amount));
                     container.insertBefore(element, container.firstChild);
