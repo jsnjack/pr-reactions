@@ -67,22 +67,24 @@ function get_reactions(issue) {
                     selector = "#issue_" + issue.id,
                     element = document.createElement("a"),
                     username = document.querySelector("meta[name='user-login']").getAttribute("content"),
-                    container;
+                    container, reaction_container, author;
                 if (issue.type === "general") {
                     selector = selector + "_" + issue.username + "_" + issue.repository;
                 }
-                container = document.querySelector(selector + " div.d-table > div:last-child > div.float-right");
+                container = document.querySelector(selector);
+                author = container.querySelector("span.opened-by a").textContent;
+                reaction_container = container.querySelector("div.d-table > div:last-child > div.float-right");
                 for (var i = 0; i < json.length; i = i + 1) {
                     if (json[i].content === "+1") {
                         amount = amount + 1;
                         title = title + json[i].user.login + " ";
                     }
                 }
-                if (title.indexOf(username) === -1) {
+                if (author !== username && title.indexOf(username) === -1) {
                     amount = amount + "★";
                 }
-                if (container.firstChild.id === "pr-reactions") {
-                    container.firstChild.text = amount;
+                if (reaction_container.firstChild.id === "pr-reactions") {
+                    reaction_container.firstChild.text = amount;
                 } else {
                     element.id = "pr-reactions";
                     element.title = title;
@@ -90,7 +92,7 @@ function get_reactions(issue) {
                     element.classList = "pr-reaction text-small text-bold";
                     element.appendChild(create_img_element());
                     element.appendChild(create_span_element(amount));
-                    container.insertBefore(element, container.firstChild);
+                    reaction_container.insertBefore(element, reaction_container.firstChild);
                 }
             });
         }
