@@ -9,59 +9,93 @@
 </head>
 
 <body>
-    <div class="indicator">Saved</div>
-    <form id="form">
-        <section>
-            <label>
-                Github personal access token
+    <table>
+        <tr class="title">
+            <td colspan="2">Main options</td>
+        </tr>
+        <tr class="option">
+            <td>
+                <label for="token">GitHub personal access token</label>
+                <div class="help_text">Personal access token is used to fetch information about repositories, pull requests and reactions</div>
+            </td>
+            <td>
                 <input id="token" type="text" size="40" />
-            </label>
-        </section>
-        <section>
-            <label>
-                Enable word-wrap for code
-                <input id="word_wrap" type="checkbox" />
-            </label>
-        </section>
-        <section>
-            <label>
-                Replace Issues navigation item with Assigned Issues
-                <input id="assigned_issues" type="checkbox" />
-            </label>
-        </section>
-        <section>
-            <label>
-                Show pending pull requests for organization
-                <input id="pending_pull_requests" type="checkbox" />
-            </label>
-            <label>
-                Organization
+            </td>
+        </tr>
+        <tr class="option">
+            <td>
+                <label for="organization">Organization</label>
+                <div class="help_text">Pending pull requests are shown only for his organization. Notifications also fired only in the repositories that belong to that organization</div>
+            </td>
+            <td>
                 <input id="organization" size="40"/>
-            </label>
-        </section>
-        <section>
-            <label>
-                Send notification to HipChat
-                <input id="hipchat_notify" type="checkbox" />
-            </label>
-            <label>
-                HipChat notification url
+            </td>
+        </tr>
+
+        <tr class="title">
+            <td colspan="2">Navigation bar</td>
+        </tr>
+        <tr class="option">
+            <td>
+                <label>Show assigned issues</label>
+                <div class="help_text">Replace Issues navigation item with Assigned Issues</div>
+            </td>
+            <td>
+                <div class="icon icon-toggle-on blue"></div>
+            </td>
+        </tr>
+        <tr class="option">
+            <td>
+                <label>Show pending pull requests</label>
+                <div class="help_text">Show pending pull requests for your organization</div>
+            </td>
+            <td>
+                <div class="icon icon-toggle-on blue"></div>
+            </td>
+        </tr>
+
+        <tr class="title">
+            <td colspan="2">Notifications</td>
+        </tr>
+        <tr class="option">
+            <td>
+                <label>Send notifications to HipChat</label>
+                <div class="help_text">Send notifications to the HipChat room when someone likes pull request</div>
+            </td>
+            <td>
+                <div class="icon icon-toggle-on blue"></div>
+            </td>
+        </tr>
+        <tr class="option">
+            <td>
+                <label for="hipchat_url">HipChat notification url</label>
+                <div class="help_text">An URL of the HipChat room to which post a notication message</div>
+            </td>
+            <td>
                 <input id="hipchat_url" type="url" size="40"/>
-            </label>
-            <label>
-                HipChat messages
-                <div id="messages_container">
-                    <ul>
-                    </ul>
-                    <div id="message_add_container">
-                        <input id="hipchat_message" size="40"/>
-                        <input id="message_add_button" type="button" value="Add"/>
-                    </div>
-                </div>
-            </label>
-        </section>
-        <button type="submit">Save</button>
-    </form>
+            </td>
+        </tr>
+
+        <tr class="title">
+            <td colspan="2">Miscellaneous</td>
+        </tr>
+        <tr class="option">
+            <td>
+                <label>Enable word-wrap for code</label>
+                <div class="help_text">Enables word-wrap for code elements (no horizontal scrolling bars)</div>
+            </td>
+            <td>
+                <div class="icon icon-toggle-on blue"></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: center;">
+                <button id="save_button" type="submit">Save</button>
+            </td>
+        </tr>
+    </table>
+
 </body>
 
 </html>

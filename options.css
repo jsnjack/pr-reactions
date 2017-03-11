@@ -39,89 +39,82 @@
 
 .icon-toggle-off:before {
     content: "\61";
-    font-size: x-large;
+    font-size: xx-large;
 }
 .icon-toggle-on:before {
     content: "\62";
-    font-size: x-large;
+    font-size: xx-large;
 }
+
 
 .blue {
     color: #2baad4;
 }
 
-body {
-    overflow: hidden;
+.dark {
+    color: #2e3532;
 }
 
-label {
-    display: block;
+.yellow {
+    color: #fbf2c0;
+}
+
+.red {
+    color: #ef5d60;
+}
+
+.lightgrey {
+    color: #e6ebe0;
+}
+
+.grey {
+    color: #84828f;
+}
+
+
+
+table {
+    width: 100%;
+    min-width: 900px;
+}
+
+tr.title td {
+    text-align: center;
+    font-size: medium;
     font-weight: bold;
-    padding: 5px 0 5px 0;
+    color: #2e3532;
+    background: #fbf2c0;
+    padding: 5px;
 }
 
-section {
-    border-bottom: 1px solid dimgray;
+tr.option td {
+    text-align: left;
+    font-size: medium;
+    color: #2e3532;
+    padding: 5px;
 }
 
-button {
-    margin: 40px 0 5px 0;
-    float: right;
+tr.option .help_text{
+    text-align: left;
+    font-size: smaller;
+    color: #84828f;
+    padding: 2px;
+    margin-left: 10px;
 }
 
-.indicator {
-    opacity: 0;
+tr.option input {
+    font-size: medium;
+    padding: 5px;
+}
+tr.option input:focus {
+    border: 1px solid #2baad4;
+}
+
+#save_button {
     background: #2baad4;
     color: white;
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
+    border: 1px solid #2baad4;
+    padding: 10px 20px 10px 20px;
+    font-size: large;
     border-radius: 5px;
-}
-
-.animate-save {
-    animation-duration: 0.2s;
-    animation-name: slidein;
-    animation-iteration-count: 1;
-    animation-direction: alternate;
-}
-
-@keyframes slidein {
-    from {
-        opacity: 1;
-        margin-left: 100%;
-        width: 300%;
-    }
-
-    to {
-        opacity: 1;
-        margin-left: 0%;
-        width: 100%;
-    }
-}
-
-#message_add_container {
-    display: block;
-}
-
-#messages_container ul {
-    list-style-type: none;
-    display: inline-block;
-    padding: 5px;
-}
-
-#messages_container ul li {
-    /*background: #2baad4;*/
-    padding: 5px;
-    border-radius: 5px;
-    display: inline-block;
-    margin: 2px 5px 2px 5px;
-    border: 2px solid #2baad4;
-}
-#messages_container ul li::after {
-    content: "  |x";
-    color: grey;
-}
-#messages_container ul li:hover {
-    cursor: pointer;
 }

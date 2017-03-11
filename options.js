@@ -92,6 +92,9 @@ function ready(fn) {
 }
 
 function start() {
+    document.querySelector("#save_button").addEventListener("click", function () {
+        window.close();
+    });
     var indicator = document.querySelector("div.indicator");
     indicator.addEventListener("animationstart", animation_event, false);
     indicator.addEventListener("animationend", animation_event, false);
