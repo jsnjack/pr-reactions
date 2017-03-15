@@ -3,7 +3,7 @@ var icon_size = 20,
     settings = {},
     pending_prs_label = "Pending prs";
 var OPTIONS = [
-    "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "hipchat_messages", "organization",
+    "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
     "pending_pull_requests"
 ];
 
@@ -113,20 +113,10 @@ function create_span_element(text) {
     return element;
 }
 
-function get_random_int(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function generate_message () {
-    var username, default_message, id, message;
-    if (!settings.hipchat_messages || settings.hipchat_messages.length === 0) {
-        username = document.querySelector("meta[name='user-login']").getAttribute("content");
-        default_message = username + " likes the pull request";
-        message = default_message;
-    } else {
-        id = get_random_int(0, settings.hipchat_messages.length - 1);
-        message = settings.hipchat_messages[id];
-    }
+    var username, message;
+    username = document.querySelector("meta[name='user-login']").getAttribute("content");
+    message = username + " likes the pull request";
     return message;
 }
 

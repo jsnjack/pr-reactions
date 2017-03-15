@@ -1,5 +1,5 @@
 var OPTIONS = [
-    "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "hipchat_messages", "organization",
+    "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
     "pending_pull_requests"
 ];
 
