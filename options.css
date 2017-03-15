@@ -46,6 +46,10 @@
     font-size: xx-large;
 }
 
+.icon {
+    cursor: pointer;
+}
+
 
 .blue {
     color: #2baad4;

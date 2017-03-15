@@ -3,85 +3,54 @@ var OPTIONS = [
     "pending_pull_requests"
 ];
 
-function animation_event (event) {
-    switch(event.type) {
-        case "animationstart":
-            event.target.style.opacity = 1;
-            break;
-        case "animationend":
-            event.target.classList.remove("animate-save");
-            setTimeout(function () {
-                event.target.style.opacity = 0;
-            }, 1000);
-            break;
-    }
-}
+var TOGGLE_ON = "icon-toggle-on";
+var TOFFLE_OFF = "icon-toggle-off";
 
-function get_hipchat_messages() {
-    var elements = document.querySelectorAll("#messages_container ul li"),
-        message_list = [];
 
-    for (var i = 0; i < elements.length; i = i + 1) {
-        message_list.push(elements[i].textContent);
-    }
-
-    return message_list;
-}
-
-function save(event) {
-    event.preventDefault();
-    var indicator = document.querySelector("div.indicator");
-    indicator.classList.add("animate-save");
+function save() {
     chrome.storage.local.set({
         token: document.querySelector("#token").value,
-        word_wrap: document.querySelector("#word_wrap").checked,
-        assigned_issues: document.querySelector("#assigned_issues").checked,
-        pending_pull_requests: document.querySelector("#pending_pull_requests").checked,
+        word_wrap: is_toggled(document.querySelector("#word_wrap")),
+        assigned_issues: is_toggled(document.querySelector("#assigned_issues")),
+        pending_pull_requests: is_toggled(document.querySelector("#pending_pull_requests")),
         hipchat_url: document.querySelector("#hipchat_url").value,
         organization: document.querySelector("#organization").value,
-        hipchat_notify: document.querySelector("#hipchat_notify").checked,
-        hipchat_messages: get_hipchat_messages()
+        hipchat_notify: is_toggled(document.querySelector("#hipchat_notify"))
     });
 }
 
 function load() {
     chrome.storage.local.get(OPTIONS, function (storage_obj) {
         document.querySelector("#token").value = storage_obj.token ? storage_obj.token : "";
-        document.querySelector("#word_wrap").checked = storage_obj.word_wrap ? true : false;
-        document.querySelector("#assigned_issues").checked = storage_obj.assigned_issues ? true : false;
-        document.querySelector("#pending_pull_requests").checked = storage_obj.pending_pull_requests ? true : false;
+        toggle_icon(document.querySelector("#word_wrap"), storage_obj.word_wrap ? true : false);
+        toggle_icon(document.querySelector("#assigned_issues"), storage_obj.assigned_issues ? true : false);
+        toggle_icon(document.querySelector("#pending_pull_requests"), storage_obj.pending_pull_requests ? true : false);
         document.querySelector("#organization").value = storage_obj.organization ? storage_obj.organization : "";
         document.querySelector("#hipchat_url").value = storage_obj.hipchat_url ? storage_obj.hipchat_url : "";
-        document.querySelector("#hipchat_notify").checked = storage_obj.hipchat_notify ? true : false;
-        for (var i = 0; i < storage_obj.hipchat_messages.length; i = i + 1) {
-            render_message(storage_obj.hipchat_messages[i]);
-        }
+        toggle_icon(document.querySelector("#hipchat_notify"), storage_obj.hipchat_notify ? true : false);
     });
 }
 
-function on_message_click(event) {
-    event.target.remove();
+function toggle_icon(element, status) {
+    // Set proper icon class to reflect status
+    var class_string = element.className;
+    var cleaned = class_string.replace(TOGGLE_ON, "").replace(TOFFLE_OFF, "") + " ";
+    if (status) {
+        cleaned = cleaned + TOGGLE_ON;
+    } else {
+        cleaned = cleaned + TOFFLE_OFF;
+    }
+    element.className = cleaned;
 }
 
-function render_message(message) {
-    // Adds message to the container
-    var container = document.querySelector("#messages_container ul"),
-        element;
-
-    element = document.createElement("li");
-    element.textContent = message;
-    container.appendChild(element);
-
-    element.addEventListener("click", on_message_click);
+function is_toggled(element){
+    // Checks if element is toggled
+    var result = false;
+    if (element.className.indexOf(TOGGLE_ON) > -1) {
+        result = true;
+    }
+    return result;
 }
-
-function on_add_click () {
-    var input = document.querySelector("#hipchat_message");
-
-    render_message(input.value);
-    input.value = "";
-}
-
 
 function ready(fn) {
     if (document.readyState !== 'loading') {
@@ -92,15 +61,17 @@ function ready(fn) {
 }
 
 function start() {
+    var icons = document.querySelectorAll("div.icon");
+    for (var item of icons) {
+        item.addEventListener("click", function () {
+            toggle_icon(event.target, !is_toggled(event.target));
+        });
+    }
+
     document.querySelector("#save_button").addEventListener("click", function () {
+        save();
         window.close();
     });
-    var indicator = document.querySelector("div.indicator");
-    indicator.addEventListener("animationstart", animation_event, false);
-    indicator.addEventListener("animationend", animation_event, false);
-    document.querySelector("#form").addEventListener("submit", save);
-    document.querySelector("#message_add_button").addEventListener("click", on_add_click);
-
     load();
 }
 
