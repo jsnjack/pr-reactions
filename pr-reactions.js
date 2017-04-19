@@ -177,7 +177,12 @@ function on_click (event) {
                         notify_hipchat();
                         break;
                     }
+                    // Separate comment
                     if (data_channel.indexOf(":issue-comment:") > 0) {
+                        break;
+                    }
+                    // In-code comment
+                    if (data_channel.indexOf(":pull-request-review-comment:") > 0) {
                         break;
                     }
                 }
