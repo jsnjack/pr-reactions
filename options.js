@@ -63,7 +63,7 @@ function ready(fn) {
 function start() {
     var icons = document.querySelectorAll("div.icon");
     for (var item of icons) {
-        item.addEventListener("click", function () {
+        item.addEventListener("click", function (event) {
             toggle_icon(event.target, !is_toggled(event.target));
         });
     }
