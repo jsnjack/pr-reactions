@@ -122,3 +122,7 @@ tr.option input:focus {
     font-size: large;
     border-radius: 5px;
 }
+
+#save_button:active {
+    opacity: 0.3
+}
