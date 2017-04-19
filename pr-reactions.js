@@ -172,7 +172,8 @@ function on_click (event) {
 
                 data_channel = node.getAttribute("data-channel");
                 if (reaction_button_clicked && data_channel) {
-                    if (data_channel.indexOf(":pull-request:") > 0) {
+                    if (data_channel.indexOf(":pull-request:") > 0
+                        && is_correct_location("github.com/" + settings.organization + "/")) {
                         notify_hipchat();
                         return;
                     }
