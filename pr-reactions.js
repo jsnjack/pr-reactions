@@ -175,10 +175,10 @@ function on_click (event) {
                     if (data_channel.indexOf(":pull-request:") > 0
                         && is_correct_location("github.com/" + settings.organization + "/")) {
                         notify_hipchat();
-                        return;
+                        break;
                     }
-                    if (data_channel.indexOf(":pull-request-review-comment:") > 0) {
-                        return;
+                    if (data_channel.indexOf(":issue-comment:") > 0) {
+                        break;
                     }
                 }
                 node = node.parentNode;
