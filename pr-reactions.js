@@ -4,7 +4,7 @@ var icon_size = 20,
     pending_prs_label = "Pending prs";
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
-    "pending_pull_requests"
+    "pending_pull_requests", "hide_not_ready"
 ];
 
 
@@ -231,11 +231,15 @@ function update_number_of_pending_pull_requests(element) {
                             if (response.ok) {
                                 return response.json().then(function(json) {
                                     for (var i=0; i < json.length; i++) {
-                                        var number = element.getAttribute("pending_pr");
-                                        element.setAttribute("pending_pr", parseInt(number, 10) + 1);
-                                        element.textContent = pending_prs_label + " (" + element.getAttribute("pending_pr") + ")";
-                                        window.sessionStorage.setItem("pr-reactions:pending_prs:timestamp", new Date().getTime());
-                                        window.sessionStorage.setItem("pr-reactions:pending_prs:value", element.getAttribute("pending_pr"));
+                                        if (settings.hide_not_ready && json[i].title.indexOf("WIP") > -1) {
+                                            continue;
+                                        } else {
+                                            var number = element.getAttribute("pending_pr");
+                                            element.setAttribute("pending_pr", parseInt(number, 10) + 1);
+                                            element.textContent = pending_prs_label + " (" + element.getAttribute("pending_pr") + ")";
+                                            window.sessionStorage.setItem("pr-reactions:pending_prs:timestamp", new Date().getTime());
+                                            window.sessionStorage.setItem("pr-reactions:pending_prs:value", element.getAttribute("pending_pr"));
+                                        }
                                     }
                                 });
                             }
@@ -277,12 +281,16 @@ function start () {
     if (settings.pending_pull_requests && settings.organization) {
         var container = document.querySelector("ul[role='navigation']"),
             sample = container.querySelector("a[href='/pulls']"),
-            pending_pr_element, pending_pr_element_container;
+            pending_pr_element, pending_pr_element_container, url;
 
         pending_pr_element = document.querySelector("#pr-reactions_pending_pr");
         if (!pending_pr_element) {
             pending_pr_element = document.createElement("a");
-            pending_pr_element.href = "/pulls?q=is:open is:pr user:" + settings.organization;
+            url = "/pulls?q=is:open is:pr user:" + settings.organization;
+            if (settings.hide_not_ready) {
+                url =url + ' NOT WIP in:title';
+            }
+            pending_pr_element.href = url;
             pending_pr_element.setAttribute("aria-label", "Pending pull requests in your organization");
             pending_pr_element.className = sample.className.replace(" selected ", " ");
             pending_pr_element.textContent = pending_prs_label + " (0)";

@@ -1,6 +1,6 @@
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
-    "pending_pull_requests"
+    "pending_pull_requests", "hide_not_ready"
 ];
 
 var TOGGLE_ON = "icon-toggle-on";
@@ -9,13 +9,14 @@ var TOFFLE_OFF = "icon-toggle-off";
 
 function save() {
     chrome.storage.local.set({
-        token: document.querySelector("#token").value,
-        word_wrap: is_toggled(document.querySelector("#word_wrap")),
         assigned_issues: is_toggled(document.querySelector("#assigned_issues")),
-        pending_pull_requests: is_toggled(document.querySelector("#pending_pull_requests")),
+        hide_not_ready: is_toggled(document.querySelector("#hide_not_ready")),
+        hipchat_notify: is_toggled(document.querySelector("#hipchat_notify")),
         hipchat_url: document.querySelector("#hipchat_url").value,
         organization: document.querySelector("#organization").value,
-        hipchat_notify: is_toggled(document.querySelector("#hipchat_notify"))
+        pending_pull_requests: is_toggled(document.querySelector("#pending_pull_requests")),
+        token: document.querySelector("#token").value,
+        word_wrap: is_toggled(document.querySelector("#word_wrap"))
     });
 }
 
@@ -28,6 +29,7 @@ function load() {
         document.querySelector("#organization").value = storage_obj.organization ? storage_obj.organization : "";
         document.querySelector("#hipchat_url").value = storage_obj.hipchat_url ? storage_obj.hipchat_url : "";
         toggle_icon(document.querySelector("#hipchat_notify"), storage_obj.hipchat_notify ? true : false);
+        toggle_icon(document.querySelector("#hide_not_ready"), storage_obj.hide_not_ready ? true : false);
     });
 }
 
