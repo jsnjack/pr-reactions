@@ -1,7 +1,8 @@
 var icon_size = 20,
     pending_prs_cache = 15 * 1000,
     settings = {},
-    pending_prs_label = "Pending prs";
+    pending_prs_label = "Pending prs",
+    not_ready_prs_key = "WIP";
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
     "pending_pull_requests", "hide_not_ready"
@@ -231,7 +232,7 @@ function update_number_of_pending_pull_requests(element) {
                             if (response.ok) {
                                 return response.json().then(function(json) {
                                     for (var i=0; i < json.length; i++) {
-                                        if (settings.hide_not_ready && json[i].title.indexOf("WIP") > -1) {
+                                        if (settings.hide_not_ready && json[i].title.indexOf(not_ready_prs_key) > -1) {
                                             continue;
                                         } else {
                                             var number = element.getAttribute("pending_pr");
@@ -288,7 +289,7 @@ function start () {
             pending_pr_element = document.createElement("a");
             url = "/pulls?q=is:open is:pr user:" + settings.organization;
             if (settings.hide_not_ready) {
-                url =url + ' NOT WIP in:title';
+                url =url + " NOT " + not_ready_prs_key + " in:title";
             }
             pending_pr_element.href = url;
             pending_pr_element.setAttribute("aria-label", "Pending pull requests in your organization");
