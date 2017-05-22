@@ -1,6 +1,6 @@
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
-    "pending_pull_requests", "hide_not_ready"
+    "pending_pull_requests", "hide_not_ready", "remove_marketplace"
 ];
 
 var TOGGLE_ON = "icon-toggle-on";
@@ -15,6 +15,7 @@ function save() {
         hipchat_url: document.querySelector("#hipchat_url").value,
         organization: document.querySelector("#organization").value,
         pending_pull_requests: is_toggled(document.querySelector("#pending_pull_requests")),
+        remove_marketplace: is_toggled(document.querySelector("#remove_marketplace")),
         token: document.querySelector("#token").value,
         word_wrap: is_toggled(document.querySelector("#word_wrap"))
     });
@@ -30,6 +31,7 @@ function load() {
         document.querySelector("#hipchat_url").value = storage_obj.hipchat_url ? storage_obj.hipchat_url : "";
         toggle_icon(document.querySelector("#hipchat_notify"), storage_obj.hipchat_notify ? true : false);
         toggle_icon(document.querySelector("#hide_not_ready"), storage_obj.hide_not_ready ? true : false);
+        toggle_icon(document.querySelector("#remove_marketplace"), storage_obj.remove_marketplace ? true : false);
     });
 }
 

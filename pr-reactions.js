@@ -5,7 +5,7 @@ var icon_size = 20,
     not_ready_prs_key = "WIP";
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
-    "pending_pull_requests", "hide_not_ready"
+    "pending_pull_requests", "hide_not_ready", "remove_marketplace"
 ];
 
 
@@ -276,6 +276,13 @@ function start () {
         if (element) {
             element.textContent = "Assigned issues";
             element.href = "//github.com/issues/assigned/?q=is%3Aopen+sort%3Aupdated-desc";
+        }
+    }
+
+    if (settings.remove_marketplace) {
+        var element = document.querySelector("ul[role='navigation'] a[href='/marketplace']");
+        if (element) {
+            element.parentNode.remove();
         }
     }
 
