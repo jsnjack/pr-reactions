@@ -265,7 +265,7 @@ function start () {
     }
 
     if (settings.word_wrap) {
-        elements = document.querySelectorAll("code");
+        elements = document.querySelectorAll("pre > code");
         for (i = 0; i < elements.length; i = i + 1) {
             elements[i].classList = "pr-reaction-word-wrap " + elements[i].classList;
         }
