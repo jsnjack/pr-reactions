@@ -4,7 +4,7 @@ var OPTIONS = [
 ];
 
 var TOGGLE_ON = "icon-toggle-on";
-var TOFFLE_OFF = "icon-toggle-off";
+var TOGGLE_OFF = "icon-toggle-off";
 
 
 function save() {
@@ -38,11 +38,11 @@ function load() {
 function toggle_icon(element, status) {
     // Set proper icon class to reflect status
     var class_string = element.className;
-    var cleaned = class_string.replace(TOGGLE_ON, "").replace(TOFFLE_OFF, "") + " ";
+    var cleaned = class_string.replace(TOGGLE_ON, "").replace(TOGGLE_OFF, "") + " ";
     if (status) {
         cleaned = cleaned + TOGGLE_ON;
     } else {
-        cleaned = cleaned + TOFFLE_OFF;
+        cleaned = cleaned + TOGGLE_OFF;
     }
     element.className = cleaned;
 }
