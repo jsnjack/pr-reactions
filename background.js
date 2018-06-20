@@ -11,5 +11,10 @@ function content_script_message(message) {
                 body: JSON.stringify(message.hipchat.notify_thumb_up.data)
             });
         }
+    } else if (message.slack && message.slack.notify_thumb_up) {
+        fetch(message.slack.notify_thumb_up.url, {
+            method: "POST",
+            body: JSON.stringify(message.slack.notify_thumb_up.data)
+        });
     }
 }

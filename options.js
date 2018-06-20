@@ -1,6 +1,6 @@
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
-    "pending_pull_requests", "hide_not_ready", "remove_marketplace"
+    "pending_pull_requests", "hide_not_ready", "remove_marketplace", "slack_notify", "slack_url"
 ];
 
 var TOGGLE_ON = "icon-toggle-on";
@@ -13,6 +13,8 @@ function save() {
         hide_not_ready: is_toggled(document.querySelector("#hide_not_ready")),
         hipchat_notify: is_toggled(document.querySelector("#hipchat_notify")),
         hipchat_url: document.querySelector("#hipchat_url").value,
+        slack_notify: is_toggled(document.querySelector("#slack_notify")),
+        slack_url: document.querySelector("#slack_url").value,
         organization: document.querySelector("#organization").value,
         pending_pull_requests: is_toggled(document.querySelector("#pending_pull_requests")),
         remove_marketplace: is_toggled(document.querySelector("#remove_marketplace")),
@@ -30,6 +32,8 @@ function load() {
         document.querySelector("#organization").value = storage_obj.organization ? storage_obj.organization : "";
         document.querySelector("#hipchat_url").value = storage_obj.hipchat_url ? storage_obj.hipchat_url : "";
         toggle_icon(document.querySelector("#hipchat_notify"), storage_obj.hipchat_notify ? true : false);
+        document.querySelector("#slack_url").value = storage_obj.slack_url ? storage_obj.slack_url : "";
+        toggle_icon(document.querySelector("#slack_notify"), storage_obj.slack_notify ? true : false);
         toggle_icon(document.querySelector("#hide_not_ready"), storage_obj.hide_not_ready ? true : false);
         toggle_icon(document.querySelector("#remove_marketplace"), storage_obj.remove_marketplace ? true : false);
     });

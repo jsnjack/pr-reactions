@@ -5,7 +5,7 @@ var icon_size = 20,
     not_ready_prs_key = "WIP";
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
-    "pending_pull_requests", "hide_not_ready", "remove_marketplace"
+    "pending_pull_requests", "hide_not_ready", "remove_marketplace", "slack_url", "slack_notify"
 ];
 
 
@@ -147,56 +147,85 @@ function generate_hipchat_payload() {
     return payload;
 }
 
-function notify_hipchat() {
-    chrome.runtime.sendMessage({
-        "hipchat": {
-            "notify_thumb_up": {
-                "data": generate_hipchat_payload(),
-                "url": settings.hipchat_url
+function generate_slack_payload() {
+    var payload = {
+        "attachments": [
+            {
+                "fallback": generate_message() + " " + location.href,
+                "color": "#ab5ebc",
+                "pretext": generate_message(),
+                "title": document.title,
+                "title_link": location.href,
             }
-        }
-    });
+        ]
+    };
+    return payload;
+}
+
+function notify_hipchat() {
+    if (settings.hipchat_notify && settings.hipchat_url) {
+        chrome.runtime.sendMessage({
+            "hipchat": {
+                "notify_thumb_up": {
+                    "data": generate_hipchat_payload(),
+                    "url": settings.hipchat_url
+                }
+            }
+        });
+    }
+}
+
+function notify_slack() {
+    if (settings.slack_notify && settings.slack_url) {
+        chrome.runtime.sendMessage({
+            "slack": {
+                "notify_thumb_up": {
+                    "data": generate_slack_payload(),
+                    "url": settings.slack_url
+                }
+            }
+        });
+    }
 }
 
 function on_click (event) {
     var reaction_button_clicked = false,
         data_channel;
-    if (settings.hipchat_url) {
-        var node = event.target;
-        while (node) {
-            if ("getAttribute" in node) {
-                if (!reaction_button_clicked && node.nodeName === "BUTTON") {
-                    if (node.getAttribute("value") === "THUMBS_UP react") {
-                        reaction_button_clicked = true;
-                    }
+    var node = event.target;
+    while (node) {
+        if ("getAttribute" in node) {
+            if (!reaction_button_clicked && node.nodeName === "BUTTON") {
+                if (node.getAttribute("value") === "THUMBS_UP react") {
+                    reaction_button_clicked = true;
                 }
-
-                data_channel = node.getAttribute("data-channel");
-                if (reaction_button_clicked && data_channel) {
-                    if (data_channel.indexOf(":pull-request:") > 0
-                        && is_correct_location("github.com/" + settings.organization + "/")) {
-                        notify_hipchat();
-                        break;
-                    }
-                    // Separate comment
-                    if (data_channel.indexOf(":issue-comment:") > 0) {
-                        break;
-                    }
-                    // In-code comment
-                    if (data_channel.indexOf(":pull-request-review-comment:") > 0) {
-                        break;
-                    }
-                }
-                node = node.parentNode;
-            } else {
-                return;
             }
+
+            data_channel = node.getAttribute("data-channel");
+            if (reaction_button_clicked && data_channel) {
+                if (data_channel.indexOf(":pull-request:") > 0
+                    && is_correct_location("github.com/" + settings.organization + "/")) {
+                    notify_hipchat();
+                    notify_slack();
+                    break;
+                }
+                // Separate comment
+                if (data_channel.indexOf(":issue-comment:") > 0) {
+                    break;
+                }
+                // In-code comment
+                if (data_channel.indexOf(":pull-request-review-comment:") > 0) {
+                    break;
+                }
+            }
+            node = node.parentNode;
+        } else {
+            return;
         }
     }
 }
 
 function attach_click_event () {
-    if (settings.hipchat_notify && is_correct_location("/pull/")) {
+    if ((settings.hipchat_notify || settings.slack_notify) && is_correct_location("/pull/")) {
         window.removeEventListener("click", on_click);
         window.addEventListener("click", on_click);
     }
