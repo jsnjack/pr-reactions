@@ -63,6 +63,7 @@ function get_reactions(issue) {
     }).then(function(response) {
         if (response.ok) {
             return response.json().then(function(json) {
+                console.log("RESP", json);
                 var amount = 0,
                     title = "",
                     selector = "#issue_" + issue.id,
@@ -285,7 +286,7 @@ function update_number_of_pending_pull_requests(element) {
 function start () {
     var elements, issues, i;
     if (is_correct_location("/pulls")) {
-        elements = document.querySelectorAll("div.issues-listing li");
+        elements = document.querySelectorAll("div.issues-listing div");
         issues = get_issues(elements);
         for (i = 0; i < issues.length; i = i + 1) {
             get_reactions(issues[i]);
