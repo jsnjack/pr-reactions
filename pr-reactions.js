@@ -63,7 +63,6 @@ function get_reactions(issue) {
     }).then(function(response) {
         if (response.ok) {
             return response.json().then(function(json) {
-                console.log("RESP", json);
                 var amount = 0,
                     title = "",
                     selector = "#issue_" + issue.id,
