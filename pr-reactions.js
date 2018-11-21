@@ -317,7 +317,7 @@ function start () {
     }
 
     if (settings.pending_pull_requests && settings.organization) {
-        var container = document.querySelector("ul[role='navigation']"),
+        var container = document.querySelector(".HeaderNavlink").parentElement.parentElement,
             sample = container.querySelector("a[href='/pulls']"),
             pending_pr_element, pending_pr_element_container, url;
 
