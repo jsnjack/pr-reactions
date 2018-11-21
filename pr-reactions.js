@@ -302,7 +302,7 @@ function start () {
     }
 
     if (settings.assigned_issues) {
-        var element = document.querySelector("ul[role='navigation'] a[href='/issues']");
+        var element = document.querySelector(".HeaderNavlink").parentElement.parentElement.querySelector("a[href='/issues']");
         if (element) {
             element.textContent = "Assigned issues";
             element.href = "//github.com/issues/assigned/?q=is%3Aopen+sort%3Aupdated-desc";
@@ -310,7 +310,7 @@ function start () {
     }
 
     if (settings.remove_marketplace) {
-        var element = document.querySelector("ul[role='navigation'] a[href='/marketplace']");
+        var element = document.querySelector(".HeaderNavlink").parentElement.parentElement.querySelector("a[href='/marketplace']");
         if (element) {
             element.parentNode.remove();
         }
