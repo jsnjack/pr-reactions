@@ -66,7 +66,7 @@ function get_reactions(issue) {
                 var amount = 0,
                     title = "",
                     selector = "#issue_" + issue.id,
-                    element = document.createElement("a"),
+                    element = document.createElement("div"),
                     username = document.querySelector("meta[name='user-login']").getAttribute("content"),
                     container, reaction_container, author;
                 if (issue.type === "general") {
@@ -102,7 +102,7 @@ function get_reactions(issue) {
 
 function create_img_element() {
     var element = document.createElement("img");
-    element.src = "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png";
+    element.src = "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png";
     element.width = icon_size;
     element.height = icon_size;
     return element;

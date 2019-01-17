@@ -7,6 +7,7 @@
 .pr-reaction {
     color: #767676;
     padding-right: 5px;
+    display: inline-block;
 }
 
 .pr-reaction:hover {
