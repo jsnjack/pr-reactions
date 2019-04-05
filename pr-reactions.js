@@ -4,7 +4,7 @@ var icon_size = 20,
     pending_prs_label = "Pending prs",
     not_ready_prs_key = "WIP";
 var OPTIONS = [
-    "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
+    "token", "word_wrap", "assigned_issues", "organization",
     "pending_pull_requests", "hide_not_ready", "remove_marketplace", "slack_url", "slack_notify"
 ];
 
@@ -121,32 +121,6 @@ function generate_message () {
     return message;
 }
 
-function generate_hipchat_payload() {
-    var payload,
-        username = document.querySelector("meta[name='user-login']").getAttribute("content");
-
-    payload = {
-        "color": "purple",
-        "from": username,
-        "message_format": "text",
-        "message": generate_message() + " " + location.href,
-        "notify": true,
-        "card": {
-            "style": "application",
-            "format": "compact",
-            "url": location.href,
-            "id": "pr-reactions",
-            "title": document.title,
-            "description": generate_message(),
-            "icon": {
-                "url": "https://github.com/fluidicon.png"
-            },
-            "date": new Date()
-        }
-    };
-    return payload;
-}
-
 function generate_slack_payload() {
     var payload = {
         "attachments": [
@@ -160,19 +134,6 @@ function generate_slack_payload() {
         ]
     };
     return payload;
-}
-
-function notify_hipchat() {
-    if (settings.hipchat_notify && settings.hipchat_url) {
-        chrome.runtime.sendMessage({
-            "hipchat": {
-                "notify_thumb_up": {
-                    "data": generate_hipchat_payload(),
-                    "url": settings.hipchat_url
-                }
-            }
-        });
-    }
 }
 
 function notify_slack() {
@@ -204,7 +165,6 @@ function on_click (event) {
             if (reaction_button_clicked && data_channel) {
                 if (data_channel.indexOf(":pull-request:") > 0
                     && is_correct_location("github.com/" + settings.organization + "/")) {
-                    notify_hipchat();
                     notify_slack();
                     break;
                 }
@@ -225,7 +185,7 @@ function on_click (event) {
 }
 
 function attach_click_event () {
-    if ((settings.hipchat_notify || settings.slack_notify) && is_correct_location("/pull/")) {
+    if (settings.slack_notify && is_correct_location("/pull/")) {
         window.removeEventListener("click", on_click);
         window.addEventListener("click", on_click);
     }

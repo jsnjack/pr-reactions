@@ -3,7 +3,7 @@ pr-reactions
 ### Description
  - Adds pull request reactions to the pull request list on github.com
  - Word-wrap for code
- - Send notifications to HipChat when user likes pull request
+ - Send notifications to Slack when user likes pull request
 
 ### How to use
 #### Install extension:

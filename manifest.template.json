@@ -39,7 +39,6 @@
     "permissions": [
         "*://github.com/*",
         "*://api.github.com/*",
-        "*://hipchat.com/*",
         "storage",
         "webRequest",
         "webRequestBlocking"

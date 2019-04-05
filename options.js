@@ -1,5 +1,5 @@
 var OPTIONS = [
-    "token", "word_wrap", "assigned_issues", "hipchat_url", "hipchat_notify", "organization",
+    "token", "word_wrap", "assigned_issues", "organization",
     "pending_pull_requests", "hide_not_ready", "remove_marketplace", "slack_notify", "slack_url"
 ];
 
@@ -11,8 +11,6 @@ function save() {
     chrome.storage.local.set({
         assigned_issues: is_toggled(document.querySelector("#assigned_issues")),
         hide_not_ready: is_toggled(document.querySelector("#hide_not_ready")),
-        hipchat_notify: is_toggled(document.querySelector("#hipchat_notify")),
-        hipchat_url: document.querySelector("#hipchat_url").value,
         slack_notify: is_toggled(document.querySelector("#slack_notify")),
         slack_url: document.querySelector("#slack_url").value,
         organization: document.querySelector("#organization").value,
@@ -30,8 +28,6 @@ function load() {
         toggle_icon(document.querySelector("#assigned_issues"), storage_obj.assigned_issues ? true : false);
         toggle_icon(document.querySelector("#pending_pull_requests"), storage_obj.pending_pull_requests ? true : false);
         document.querySelector("#organization").value = storage_obj.organization ? storage_obj.organization : "";
-        document.querySelector("#hipchat_url").value = storage_obj.hipchat_url ? storage_obj.hipchat_url : "";
-        toggle_icon(document.querySelector("#hipchat_notify"), storage_obj.hipchat_notify ? true : false);
         document.querySelector("#slack_url").value = storage_obj.slack_url ? storage_obj.slack_url : "";
         toggle_icon(document.querySelector("#slack_notify"), storage_obj.slack_notify ? true : false);
         toggle_icon(document.querySelector("#hide_not_ready"), storage_obj.hide_not_ready ? true : false);
