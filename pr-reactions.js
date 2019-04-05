@@ -261,7 +261,7 @@ function start () {
     }
 
     if (settings.assigned_issues) {
-        var element = document.querySelector(".HeaderNavlink").parentElement.parentElement.querySelector("a[href='/issues']");
+        var element = document.querySelector(".Header nav").querySelector("a[href='/issues']");
         if (element) {
             element.textContent = "Assigned issues";
             element.href = "//github.com/issues/assigned/?q=is%3Aopen+sort%3Aupdated-desc";
@@ -269,14 +269,14 @@ function start () {
     }
 
     if (settings.remove_marketplace) {
-        var element = document.querySelector(".HeaderNavlink").parentElement.parentElement.querySelector("a[href='/marketplace']");
+        var element = document.querySelector(".Header nav").querySelector("a[href='/marketplace']");
         if (element) {
-            element.parentNode.remove();
+            element.remove();
         }
     }
 
     if (settings.pending_pull_requests && settings.organization) {
-        var container = document.querySelector(".HeaderNavlink").parentElement.parentElement,
+        var container = document.querySelector(".Header nav"),
             sample = container.querySelector("a[href='/pulls']"),
             pending_pr_element, pending_pr_element_container, url;
 
