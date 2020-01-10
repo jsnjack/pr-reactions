@@ -1,6 +1,6 @@
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "organization",
-    "pending_pull_requests", "hide_not_ready", "remove_marketplace", "slack_notify", "slack_url"
+    "modify_pr_page", "hide_not_ready", "remove_marketplace",
 ];
 
 var TOGGLE_ON = "icon-toggle-on";
@@ -11,10 +11,8 @@ function save() {
     chrome.storage.local.set({
         assigned_issues: is_toggled(document.querySelector("#assigned_issues")),
         hide_not_ready: is_toggled(document.querySelector("#hide_not_ready")),
-        slack_notify: is_toggled(document.querySelector("#slack_notify")),
-        slack_url: document.querySelector("#slack_url").value,
         organization: document.querySelector("#organization").value,
-        pending_pull_requests: is_toggled(document.querySelector("#pending_pull_requests")),
+        modify_pr_page: is_toggled(document.querySelector("#modify_pr_page")),
         remove_marketplace: is_toggled(document.querySelector("#remove_marketplace")),
         token: document.querySelector("#token").value,
         word_wrap: is_toggled(document.querySelector("#word_wrap"))
@@ -26,10 +24,8 @@ function load() {
         document.querySelector("#token").value = storage_obj.token ? storage_obj.token : "";
         toggle_icon(document.querySelector("#word_wrap"), storage_obj.word_wrap ? true : false);
         toggle_icon(document.querySelector("#assigned_issues"), storage_obj.assigned_issues ? true : false);
-        toggle_icon(document.querySelector("#pending_pull_requests"), storage_obj.pending_pull_requests ? true : false);
+        toggle_icon(document.querySelector("#modify_pr_page"), storage_obj.modify_pr_page ? true : false);
         document.querySelector("#organization").value = storage_obj.organization ? storage_obj.organization : "";
-        document.querySelector("#slack_url").value = storage_obj.slack_url ? storage_obj.slack_url : "";
-        toggle_icon(document.querySelector("#slack_notify"), storage_obj.slack_notify ? true : false);
         toggle_icon(document.querySelector("#hide_not_ready"), storage_obj.hide_not_ready ? true : false);
         toggle_icon(document.querySelector("#remove_marketplace"), storage_obj.remove_marketplace ? true : false);
     });

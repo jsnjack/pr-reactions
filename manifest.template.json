@@ -27,12 +27,6 @@
             ]
         }
     ],
-    "background": {
-        "scripts": [
-            "background.js"
-        ],
-        "persistent": true
-    },
     "options_ui": {
         "page": "options.html"
     },
