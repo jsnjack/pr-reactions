@@ -66,10 +66,13 @@ function start () {
             element.href = "/pulls?q=is:open is:pr archived:false review:approved user:" + settings.organization;
         }
 
-        var element = document.querySelector(".Header nav").querySelector("a[href='/issues']");
+        var element = document.querySelector(".Header nav").querySelector("a[href='/pulls']");
         if (element) {
-            element.textContent = "Assigned issues";
-            element.href = "//github.com/issues/assigned/?q=is%3Aopen+sort%3Aupdated-desc";
+            var url = "/pulls?q=is:open is:pr archived:false user:" + settings.organization;
+            if (settings.hide_not_ready) {
+                url =url + " NOT " + not_ready_prs_key + " in:title";
+            }
+            element.href= url;
         }
     }
 }
