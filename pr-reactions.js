@@ -78,7 +78,7 @@ function start () {
             var element = document.querySelector(".Header nav").querySelector("a[href='/pulls']");
             if (element) {
                 var url = "/pulls?q=is:open is:pr archived:false user:" + settings.organization;
-                url += " in:title review-requested:" + document.querySelector("meta[name='user-login']").getAttribute("content");
+                url += " review-requested:" + document.querySelector("meta[name='user-login']").getAttribute("content");
                 if (settings.hide_not_ready) {
                     url = url + " NOT " + not_ready_prs_key + " in:title";
                 }
