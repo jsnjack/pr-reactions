@@ -50,7 +50,7 @@ function start () {
     if (settings.modify_pr_page) {
         // TODO: replace with MO
         setTimeout(function () {
-            var pr_statuses = document.querySelectorAll("#js-issues-toolbar span.opened-by + span > a");
+            var pr_statuses = document.querySelectorAll("#js-issues-toolbar span.opened-by + span a");
             for (var st of pr_statuses) {
                 st.textContent = st.getAttribute("aria-label");
             }
