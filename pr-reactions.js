@@ -6,6 +6,7 @@ var icon_size = 20,
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "organization",
     "modify_pr_page", "hide_not_ready", "remove_marketplace",
+    "create_pr"
 ];
 
 
@@ -37,6 +38,14 @@ function start () {
         if (element) {
             element.textContent = "Assigned issues";
             element.href = "//github.com/issues/assigned/?q=is%3Aopen+sort%3Aupdated-desc";
+        }
+    }
+
+    if (settings.create_pr && settings.organization) {
+        var element = document.querySelector(".Header nav").querySelector("a[href='/marketplace']");
+        if (element) {
+            element.textContent = "Create a pr";
+            element.href = "//github.com/" + settings.organization +"/cobro/compare";
         }
     }
 

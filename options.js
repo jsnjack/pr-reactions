@@ -1,6 +1,7 @@
 var OPTIONS = [
     "token", "word_wrap", "assigned_issues", "organization",
     "modify_pr_page", "hide_not_ready", "remove_marketplace",
+    "create_pr",
 ];
 
 var TOGGLE_ON = "icon-toggle-on";
@@ -10,6 +11,7 @@ var TOGGLE_OFF = "icon-toggle-off";
 function save() {
     chrome.storage.local.set({
         assigned_issues: is_toggled(document.querySelector("#assigned_issues")),
+        create_pr: is_toggled(document.querySelector("#create_pr")),
         hide_not_ready: is_toggled(document.querySelector("#hide_not_ready")),
         organization: document.querySelector("#organization").value,
         modify_pr_page: is_toggled(document.querySelector("#modify_pr_page")),
@@ -24,6 +26,7 @@ function load() {
         document.querySelector("#token").value = storage_obj.token ? storage_obj.token : "";
         toggle_icon(document.querySelector("#word_wrap"), storage_obj.word_wrap ? true : false);
         toggle_icon(document.querySelector("#assigned_issues"), storage_obj.assigned_issues ? true : false);
+        toggle_icon(document.querySelector("#create_pr"), storage_obj.create_pr ? true : false);
         toggle_icon(document.querySelector("#modify_pr_page"), storage_obj.modify_pr_page ? true : false);
         document.querySelector("#organization").value = storage_obj.organization ? storage_obj.organization : "";
         toggle_icon(document.querySelector("#hide_not_ready"), storage_obj.hide_not_ready ? true : false);
