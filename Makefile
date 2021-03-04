@@ -14,4 +14,4 @@ generate_manifest: version
 	VERSION=${VERSION} envsubst < ${MANIFEST_TEMPLATE} > manifest.json
 
 build: generate_manifest
-	web-ext build
+	node_modules/.bin/web-ext build
