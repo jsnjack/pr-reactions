@@ -66,22 +66,29 @@ function start () {
         }, 1000);
 
         if (settings.organization) {
+            var me = document.querySelector("meta[name='user-login']").getAttribute("content");
+            var not_ready = `NOT ${not_ready_prs_key} in:title draft:false`;
             var element = document.querySelector("#js-pjax-container nav > a[aria-label='Pull Requests assigned to you']");
             if (element) {
                 element.textContent = "All";
-                // element.setAttribute("aria-label", "All created pull requests in organization");
-                var url = "/pulls?q=is:open is:pr archived:false user:" + settings.organization;
+                element.setAttribute("aria-label", "All created pull requests in organization");
+                var url = `/pulls?q=is:open is:pr archived:false user:${settings.organization}`;
                 if (settings.hide_not_ready) {
-                    url =url + " NOT " + not_ready_prs_key + " in:title";
+                    url = `${url} ${not_ready}`;
                 }
-                element.href= url;
+                element.href = url;
             }
 
             var element = document.querySelector("#js-pjax-container nav > a[title='Pull Requests mentioning you']");
             if (element) {
                 element.textContent = "Approved";
                 element.setAttribute("aria-label", "All approved pull requests in organization");
-                element.href = "/pulls?q=is:open is:pr archived:false review:approved user:" + settings.organization;
+                element.href = `/pulls?q=is:open is:pr archived:false review:approved user:${settings.organization}`;
+            }
+
+            var element = document.querySelector("#js-pjax-container nav > a[title='Pull Requests requesting your review']");
+            if (element) {
+                element.href = `/pulls?q=is:open is:pr archived:false user:${settings.organization} review-requested:${me}`;
             }
 
             var element = document.querySelector(".Header nav").querySelector("a[href='/pulls']");
@@ -89,7 +96,7 @@ function start () {
                 var url = "/pulls?q=is:open is:pr archived:false user:" + settings.organization;
                 url += " review-requested:" + document.querySelector("meta[name='user-login']").getAttribute("content");
                 if (settings.hide_not_ready) {
-                    url = url + " NOT " + not_ready_prs_key + " in:title";
+                    url = `${url} ${not_ready}`;
                 }
                 element.href= url;
             }
