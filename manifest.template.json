@@ -32,10 +32,7 @@
     },
     "permissions": [
         "*://github.com/*",
-        "*://api.github.com/*",
-        "storage",
-        "webRequest",
-        "webRequestBlocking"
+        "storage"
     ],
     "manifest_version": 2
 }
