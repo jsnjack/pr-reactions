@@ -1,5 +1,5 @@
 var OPTIONS = [
-    "token", "word_wrap", "assigned_issues", "organization",
+    "word_wrap", "assigned_issues", "organization",
     "modify_pr_page", "hide_not_ready", "remove_marketplace",
     "create_pr",
 ];
@@ -16,14 +16,12 @@ function save() {
         organization: document.querySelector("#organization").value,
         modify_pr_page: is_toggled(document.querySelector("#modify_pr_page")),
         remove_marketplace: is_toggled(document.querySelector("#remove_marketplace")),
-        token: document.querySelector("#token").value,
         word_wrap: is_toggled(document.querySelector("#word_wrap"))
     });
 }
 
 function load() {
     chrome.storage.local.get(OPTIONS, function (storage_obj) {
-        document.querySelector("#token").value = storage_obj.token ? storage_obj.token : "";
         toggle_icon(document.querySelector("#word_wrap"), storage_obj.word_wrap ? true : false);
         toggle_icon(document.querySelector("#assigned_issues"), storage_obj.assigned_issues ? true : false);
         toggle_icon(document.querySelector("#create_pr"), storage_obj.create_pr ? true : false);

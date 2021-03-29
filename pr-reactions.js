@@ -4,7 +4,7 @@ var icon_size = 20,
     pending_prs_label = "Pending prs",
     not_ready_prs_key = "WIP";
 var OPTIONS = [
-    "token", "word_wrap", "assigned_issues", "organization",
+    "word_wrap", "assigned_issues", "organization",
     "modify_pr_page", "hide_not_ready", "remove_marketplace",
     "create_pr"
 ];
